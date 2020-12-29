@@ -17,6 +17,8 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private val paint: Paint = Paint()
     private var canvas: Canvas? = null
 
+    private val player = Player(screenWidth, screenHeight)
+
     override fun run() {
         while (playing) {
             update()
@@ -25,13 +27,15 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     }
 
     private fun update() {
-
+        player.update()
     }
 
     private fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas?.drawColor(Color.argb(255, 196, 240, 194))
+            paint.color = Color.WHITE
+            canvas?.drawRect(player.hitBox, paint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
