@@ -18,6 +18,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private var canvas: Canvas? = null
 
     private val player = Player(screenWidth, screenHeight)
+    private val barrierSpawner = BarrierSpawner(screenWidth, screenHeight, player.size)
 
     override fun run() {
         while (playing) {
@@ -27,15 +28,24 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     }
 
     private fun update() {
+        barrierSpawner.update()
         player.update()
     }
 
     private fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
+
             canvas?.drawColor(Color.argb(255, 196, 240, 194))
+
+            paint.color = Color.BLACK
+            barrierSpawner.barrier.walls.forEach {
+                canvas?.drawRect(it.hitBox, paint)
+            }
+
             paint.color = Color.WHITE
             canvas?.drawRect(player.hitBox, paint)
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
