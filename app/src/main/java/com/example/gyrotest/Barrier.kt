@@ -20,6 +20,12 @@ class Barrier(private val screenWidth: Int, private val screenHeight: Int, priva
                 val wallRight = Wall(screenWidth - playerSize - (playerSize + playerSize / 2), playerSize ,0, 0)
                 walls.add(wallRight)
             }
+            BarrierSpawner.CENTER -> {
+                val wallLeft = Wall(screenWidth / 2 - playerSize / 2 - playerSize / 4, playerSize, 0,0)
+                walls.add(wallLeft)
+                val wallRight = Wall(screenWidth, playerSize ,screenWidth / 2 + playerSize / 2 + playerSize / 4, 0)
+                walls.add(wallRight)
+            }
         }
     }
 
