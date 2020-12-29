@@ -1,5 +1,7 @@
 package com.example.gyrotest
 
+import java.util.*
+
 class BarrierSpawner(private val screenWidth: Int, private val screenHeight: Int, private val playerSize: Int) {
 
     companion object {
@@ -10,13 +12,15 @@ class BarrierSpawner(private val screenWidth: Int, private val screenHeight: Int
 
     val barrier = Barrier(screenWidth, screenHeight, playerSize)
 
+    private val generator = Random()
+
     init {
-        barrier.buildWalls(LEFT)
+        barrier.buildWalls(generator.nextInt(2))
     }
 
     fun update() {
         if (barrier.walls[0].y > screenHeight) {
-            barrier.buildWalls(LEFT)
+            barrier.buildWalls(generator.nextInt(2))
         } else {
             barrier.walls.forEach {
                 it.y += playerSize
