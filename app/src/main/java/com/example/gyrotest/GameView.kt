@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
-class GameView(context: Context, private val screenWidth: Int, private val screenHeight: Int): SurfaceView(context), Runnable {
+class GameView(context: Context, private val screenWidth: Int, private val screenHeight: Int) : SurfaceView(context), Runnable {
 
     @Volatile
     private var playing = false
@@ -18,7 +18,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private var canvas: Canvas? = null
 
     private val player = Player(screenWidth, screenHeight)
-    private val barrierSpawner = BarrierSpawner(screenWidth, screenHeight, player.size)
+    private val barrierSpawner = BarriersLine(screenWidth, screenHeight, player.size)
 
     override fun run() {
         while (playing) {
@@ -39,8 +39,10 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
             canvas?.drawColor(Color.argb(255, 196, 240, 194))
 
             paint.color = Color.BLACK
-            barrierSpawner.barrier.walls.forEach {
-                canvas?.drawRect(it.hitBox, paint)
+            barrierSpawner.barriers.forEach { b ->
+                b.walls.forEach {
+                    canvas?.drawRect(it.hitBox, paint)
+                }
             }
 
             paint.color = Color.WHITE
