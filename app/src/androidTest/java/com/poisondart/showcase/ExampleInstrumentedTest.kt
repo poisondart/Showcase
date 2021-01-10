@@ -1,4 +1,4 @@
-package com.example.gyrotest
+package com.poisondart.showcase
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

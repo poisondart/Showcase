@@ -1,4 +1,4 @@
-package com.example.gyrotest
+package com.poisondart.showcase
 
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.example.gyrotest
+package com.poisondart.showcase
 
 class Barrier(private val screenWidth: Int, private val screenHeight: Int, private val playerSize: Int) {
 
