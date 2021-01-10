@@ -5,16 +5,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.view.SurfaceView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("ViewConstructor")
-class GameView(context: Context, private val screenWidth: Int, private val screenHeight: Int) : SurfaceView(context), Runnable, SensorEventListener {
+class GameView(context: Context, screenWidth: Int, screenHeight: Int) : SurfaceView(context), Runnable {
 
     @Volatile
     private var playing = false
@@ -24,23 +18,9 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private var canvas: Canvas? = null
 
     private val player = Player(screenWidth, screenHeight)
-    private val barrierSpawner = BarriersLine(screenWidth, screenHeight, player.size)
+    private val barriersLine = BarriersLine(screenWidth, screenHeight, player.size)
 
-    private var sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-    private lateinit var accelerometer: Sensor
-
-    private var lastX = 0f
-    private var lastY = 0f
-
-    init {
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
-        } else {
-            Toast.makeText(context, "No accelerometer, sorry!", Toast.LENGTH_SHORT).show()
-            (context as AppCompatActivity).finish()
-        }
-    }
+    private val accelerometerHelper = AccelerometerHelper(context)
 
     override fun run() {
         while (playing) {
@@ -49,15 +29,9 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
         }
     }
 
-    override fun onSensorChanged(p0: SensorEvent) {
-        lastX = p0.values[0]
-    }
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
-
     private fun update() {
-        barrierSpawner.update()
-        player.move(lastX, lastY)
+        barriersLine.update()
+        player.move(accelerometerHelper.lastX, accelerometerHelper.lastY)
         player.update()
     }
 
@@ -68,7 +42,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
             canvas?.drawColor(Color.GREEN)
 
             paint.color = Color.BLACK
-            barrierSpawner.barriers.forEach { b ->
+            barriersLine.barriers.forEach { b ->
                 b.walls.forEach {
                     canvas?.drawRect(it.hitBox, paint)
                 }
@@ -83,7 +57,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
 
     fun pause() {
         playing = false
-        sensorManager.unregisterListener(this)
+        accelerometerHelper.unregisterListener()
         try {
             gameThread?.join()
         } catch (e: InterruptedException) {
@@ -93,7 +67,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
 
     fun resume() {
         playing = true
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+        accelerometerHelper.registerListener()
         gameThread = Thread(this)
         gameThread?.start()
     }
