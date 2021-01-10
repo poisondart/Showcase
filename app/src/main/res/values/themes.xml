@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.GyroTest" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.Showcase" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@android:color/darker_gray</item>
         <!-- Status bar color. -->

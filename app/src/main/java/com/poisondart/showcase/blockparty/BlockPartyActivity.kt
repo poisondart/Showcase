@@ -1,10 +1,10 @@
-package com.poisondart.showcase
+package com.poisondart.showcase.blockparty
 
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class MainActivity : AppCompatActivity() {
+class BlockPartyActivity : AppCompatActivity() {
 
     private lateinit var gameView: GameView
 
