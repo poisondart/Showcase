@@ -28,6 +28,7 @@ class AccelerometerHelper(context: Context): SensorEventListener {
 
     override fun onSensorChanged(p0: SensorEvent) {
         lastX = p0.values[0]
+        lastY = p0.values[2]
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
