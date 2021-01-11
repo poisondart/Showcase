@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
-class GameView(context: Context, screenWidth: Int, screenHeight: Int) : SurfaceView(context), Runnable {
+class GameView(context: Context, private val screenWidth: Int, private val screenHeight: Int) : SurfaceView(context), Runnable {
 
     @Volatile
     private var playing = false
@@ -30,6 +30,7 @@ class GameView(context: Context, screenWidth: Int, screenHeight: Int) : SurfaceV
     }
 
     private fun update() {
+        barriersLine.intersect(player.hitBox)
         barriersLine.update()
         player.move(accelerometerHelper.lastX, accelerometerHelper.lastY)
         player.update()
@@ -50,6 +51,9 @@ class GameView(context: Context, screenWidth: Int, screenHeight: Int) : SurfaceV
 
             paint.color = Color.WHITE
             canvas?.drawRect(player.hitBox, paint)
+
+            paint.textSize = player.size.toFloat()
+            canvas?.drawText(barriersLine.getWallsPassed(), (player.size / 4).toFloat(), (player.size).toFloat(), paint)
 
             holder.unlockCanvasAndPost(canvas)
         }

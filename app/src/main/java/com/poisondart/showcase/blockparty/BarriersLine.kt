@@ -1,5 +1,6 @@
 package com.poisondart.showcase.blockparty
 
+import android.graphics.Rect
 import java.util.*
 
 class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, private val playerSize: Int) {
@@ -15,6 +16,10 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
     val barriers = mutableListOf<Barrier>()
 
     private val generator = Random()
+
+    private var wallsPassed = 0
+
+    fun getWallsPassed() = wallsPassed.toString()
 
     init {
         val barrier = Barrier(screenWidth, screenHeight, playerSize)
@@ -32,6 +37,7 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
 
         barriers.forEach {
             if (it.walls[0].y > screenHeight) {
+                wallsPassed++
                 it.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
             } else {
                 it.walls.forEach { wall ->
@@ -40,6 +46,16 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
                 }
             }
         }
+    }
+
+    fun intersect(hitBox: Rect): Boolean {
+        barriers.forEach { barrier: Barrier ->
+            barrier.walls.forEach { wall: Wall ->
+                wallsPassed = 0
+                if (hitBox.intersect(wall.hitBox)) return true
+            }
+        }
+        return false
     }
 
 }
