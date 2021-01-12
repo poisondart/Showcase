@@ -34,10 +34,11 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private fun update() {
         if (!paused) {
             barriersLine.update()
-            player.move(accelerometerHelper.lastX, accelerometerHelper.lastY)
-            if (barriersLine.intersect(player.hitBox)) {
-                player.pushDownByWall()
-            }
+            player.move(accelerometerHelper.lastX,
+                    accelerometerHelper.lastY,
+                    barriersLine.intersect(player.hitBoxLeft),
+                    barriersLine.intersect(player.hitBoxRight),
+                    barriersLine.intersect(player.hitBoxTop))
         }
         player.update()
 
@@ -63,8 +64,16 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
             }
 
             paint.color = Color.WHITE
-            canvas?.drawRect(player.hitBox, paint)
+            canvas?.drawRect(player.body, paint)
 
+            ///
+            paint.color = Color.RED
+            canvas?.drawRect(player.hitBoxLeft, paint)
+            canvas?.drawRect(player.hitBoxRight, paint)
+            canvas?.drawRect(player.hitBoxTop, paint)
+            ///
+
+            paint.color = Color.WHITE
             paint.textSize = player.size.toFloat()
             canvas?.drawText(barriersLine.getWallsPassed(), (player.size / 4).toFloat(), (player.size).toFloat(), paint)
 

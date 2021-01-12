@@ -40,7 +40,7 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
                 it.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
             } else {
                 it.walls.forEach { wall ->
-                    wall.y += (playerSize / 8)
+                    wall.y += (playerSize / 16)
                     wall.update()
                 }
             }
@@ -61,7 +61,6 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
         val barrier = Barrier(screenWidth, screenHeight, playerSize)
         barrier.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
         barriers.add(barrier)
-
         wallsPassed = 0
     }
 
