@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
@@ -12,6 +13,7 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
 
     @Volatile
     private var playing = false
+    private var paused = true
     private var gameThread: Thread? = null
 
     private val paint: Paint = Paint()
@@ -30,14 +32,19 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     }
 
     private fun update() {
-        barriersLine.intersect(player.hitBox)
-        barriersLine.update()
-        player.move(accelerometerHelper.lastX, accelerometerHelper.lastY)
+        if (!paused) {
+            barriersLine.update()
+            player.move(accelerometerHelper.lastX, accelerometerHelper.lastY)
+            if (barriersLine.intersect(player.hitBox)) {
+                player.pushDownByWall()
+            }
+        }
         player.update()
     }
 
     private fun draw() {
         if (holder.surface.isValid) {
+
             canvas = holder.lockCanvas()
 
             canvas?.drawColor(Color.GREEN)
@@ -55,12 +62,32 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
             paint.textSize = player.size.toFloat()
             canvas?.drawText(barriersLine.getWallsPassed(), (player.size / 4).toFloat(), (player.size).toFloat(), paint)
 
+            if (paused) {
+                val textPaint = Paint()
+                textPaint.color = Color.WHITE
+                textPaint.textSize = (player.size / 4).toFloat()
+                textPaint.textAlign = Paint.Align.CENTER
+                val pauseText = "Используйте гироскоп, чтобы преодолевать преграды."
+                val xPos = screenWidth / 2
+                val yPos = (screenWidth / 2 - (textPaint.descent() + textPaint.ascent()) / 2)
+                canvas?.drawText(pauseText, xPos.toFloat(), yPos, textPaint)
+            }
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (paused && event.action == MotionEvent.ACTION_DOWN) {
+            paused = false
+        }
+        return true
+    }
+
     fun pause() {
         playing = false
+        paused = true
         accelerometerHelper.unregisterListener()
         try {
             gameThread?.join()

@@ -30,6 +30,10 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
         }*/
     }
 
+    fun pushDownByWall() {
+        y += (size / 8)
+    }
+
     fun update() {
         hitBox.left = x
         hitBox.top = y
