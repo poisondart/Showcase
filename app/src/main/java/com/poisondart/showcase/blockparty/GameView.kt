@@ -40,6 +40,12 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
             }
         }
         player.update()
+
+        if (player.isOut()) {
+            player.respawn()
+            barriersLine.reset()
+            paused = true
+        }
     }
 
     private fun draw() {

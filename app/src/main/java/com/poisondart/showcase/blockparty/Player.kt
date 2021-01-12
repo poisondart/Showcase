@@ -34,6 +34,14 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
         y += (size / 8)
     }
 
+    fun isOut() = y > screenHeight
+
+    fun respawn() {
+        x = screenWidth / 2 - size / 2
+        y = screenHeight / 2 - size / 2
+        update()
+    }
+
     fun update() {
         hitBox.left = x
         hitBox.top = y

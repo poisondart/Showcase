@@ -28,7 +28,6 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
     }
 
     fun update() {
-
         if (barriers.size < 3 && barriers.last().walls[0].y > screenHeight / 3) {
             val barrier = Barrier(screenWidth, screenHeight, playerSize)
             barrier.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
@@ -51,11 +50,19 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
     fun intersect(hitBox: Rect): Boolean {
         barriers.forEach { barrier: Barrier ->
             barrier.walls.forEach { wall: Wall ->
-                wallsPassed = 0
                 if (hitBox.intersect(wall.hitBox)) return true
             }
         }
         return false
+    }
+
+    fun reset() {
+        barriers.clear()
+        val barrier = Barrier(screenWidth, screenHeight, playerSize)
+        barrier.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
+        barriers.add(barrier)
+
+        wallsPassed = 0
     }
 
 }
