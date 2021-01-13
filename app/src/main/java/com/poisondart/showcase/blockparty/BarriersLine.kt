@@ -18,6 +18,7 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
     private val generator = Random()
 
     private var wallsPassed = 0
+    private var speed = playerSize / 16
 
     fun getWallsPassed() = wallsPassed.toString()
 
@@ -37,10 +38,13 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
         barriers.forEach {
             if (it.walls[0].y > screenHeight) {
                 wallsPassed++
+                if (wallsPassed % 5 == 0) {
+                    speed = (speed * 1.25).toInt()
+                }
                 it.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
             } else {
                 it.walls.forEach { wall ->
-                    wall.y += (playerSize / 16)
+                    wall.y += speed
                     wall.update()
                 }
             }
@@ -62,6 +66,7 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
         barrier.buildWalls(generator.nextInt(BARRIERS_TYPES_COUNT))
         barriers.add(barrier)
         wallsPassed = 0
+        speed = playerSize / 16
     }
 
 }

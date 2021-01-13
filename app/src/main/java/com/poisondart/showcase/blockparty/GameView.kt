@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
-class GameView(context: Context, private val screenWidth: Int, private val screenHeight: Int) : SurfaceView(context), Runnable {
+class GameView(context: Context, private val screenWidth: Int, screenHeight: Int) : SurfaceView(context), Runnable {
 
     @Volatile
     private var playing = false
@@ -34,8 +34,8 @@ class GameView(context: Context, private val screenWidth: Int, private val scree
     private fun update() {
         if (!paused) {
             barriersLine.update()
-            player.move(accelerometerHelper.lastX,
-                    accelerometerHelper.lastY,
+            player.move(accelerometerHelper.xAcceleration,
+                    accelerometerHelper.yAcceleration,
                     barriersLine.intersect(player.hitBoxLeft),
                     barriersLine.intersect(player.hitBoxRight),
                     barriersLine.intersect(player.hitBoxTop))

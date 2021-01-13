@@ -10,18 +10,18 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
     val body = Rect(x, y, size, size)
     val hitBoxLeft = Rect(x, y, 1, size)
     val hitBoxRight = Rect(x + size - 1, y, 1, size)
-    val hitBoxTop = Rect(x, y, size, 1)
+    val hitBoxTop = Rect(x + 1, y, size - 1, 1)
 
-    fun move(lastX: Float, lastY: Float, isPushedLeft: Boolean, isPushedRight: Boolean, isPushedTop: Boolean) {
-        if (abs(lastX) > 0.4) {
-            if (lastX < 0) {
-                if (!isPushedRight) x += (size / 4)
-                if (x > screenWidth - body.width()) x = screenWidth - body.width()
-            } else {
-                if (!isPushedLeft) x -= (size / 4)
-                if (x < 0) x = 0
-            }
+    fun move(xAcceleration: Float, yAcceleration: Float, isPushedLeft: Boolean, isPushedRight: Boolean, isPushedTop: Boolean) {
+
+        if (xAcceleration < 0) {
+            if (!isPushedRight) x += (abs(xAcceleration) * 10).toInt()
+            if (x > screenWidth - body.width()) x = screenWidth - body.width()
+        } else {
+            if (!isPushedLeft) x -= (abs(xAcceleration) * 10).toInt()
+            if (x < 0) x = 0
         }
+
         if (isPushedTop) pushDownByWall()
         //if (isPushed) {
         //    pushDownByWall()
@@ -66,9 +66,9 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
         hitBoxRight.right = hitBoxRight.left + 1
         hitBoxRight.bottom = hitBoxRight.top + size
 
-        hitBoxTop.left = x
+        hitBoxTop.left = x + 1
         hitBoxTop.top = y
-        hitBoxTop.right = hitBoxTop.left + size
+        hitBoxTop.right = hitBoxTop.left + size - 1
         hitBoxTop.bottom = hitBoxTop.top + 1
     }
 }

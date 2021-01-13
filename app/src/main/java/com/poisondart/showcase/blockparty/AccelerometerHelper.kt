@@ -13,8 +13,8 @@ class AccelerometerHelper(context: Context): SensorEventListener {
     private var sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private lateinit var accelerometer: Sensor
 
-    var lastX = 0f
-    var lastY = 0f
+    var xAcceleration = 0f
+    var yAcceleration = 0f
 
     init {
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
@@ -27,8 +27,8 @@ class AccelerometerHelper(context: Context): SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent) {
-        lastX = p0.values[0]
-        lastY = p0.values[1]
+        xAcceleration = p0.values[0]
+        yAcceleration = p0.values[1]
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
