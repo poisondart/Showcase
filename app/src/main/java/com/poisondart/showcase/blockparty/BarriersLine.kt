@@ -17,10 +17,10 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
 
     private val generator = Random()
 
-    private var wallsPassed = 0
+    var wallsPassed = 0
     private var speed = playerSize / 16
 
-    fun getWallsPassed() = wallsPassed.toString()
+    fun getWallsPassedString() = wallsPassed.toString()
 
     init {
         val barrier = Barrier(screenWidth, screenHeight, playerSize)

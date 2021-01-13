@@ -23,6 +23,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
     private val barriersLine = BarriersLine(screenWidth, screenHeight, player.size)
 
     private val accelerometerHelper = AccelerometerHelper(context)
+    private val highScoreManager = HighScoreManager(context)
 
     override fun run() {
         while (playing) {
@@ -43,6 +44,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         player.update()
 
         if (player.isOut()) {
+            highScoreManager.checkNewScore(barriersLine.wallsPassed)
             player.respawn()
             barriersLine.reset()
             paused = true
@@ -75,7 +77,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
 
             paint.color = Color.WHITE
             paint.textSize = player.size.toFloat()
-            canvas?.drawText(barriersLine.getWallsPassed(), (player.size / 4).toFloat(), (player.size).toFloat(), paint)
+            canvas?.drawText("${barriersLine.getWallsPassedString()}/${highScoreManager.getHighScore()}", (player.size / 4).toFloat(), (player.size).toFloat(), paint)
 
             if (paused) {
                 val textPaint = Paint()
