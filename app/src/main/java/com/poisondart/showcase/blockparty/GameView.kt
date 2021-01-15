@@ -35,11 +35,13 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
     private fun update() {
         if (!paused) {
             barriersLine.update()
-            player.move(accelerometerHelper.xAcceleration,
+            val eke = barriersLine.intersect(player.body)
+            /*player.move(accelerometerHelper.xAcceleration,
                     accelerometerHelper.yAcceleration,
                     barriersLine.intersect(player.hitBoxLeft),
                     barriersLine.intersect(player.hitBoxRight),
-                    barriersLine.intersect(player.hitBoxTop))
+                    barriersLine.intersect(player.hitBoxTop))*/
+            player.move(accelerometerHelper.xAcceleration, eke[0], eke[1])
         }
         player.update()
 

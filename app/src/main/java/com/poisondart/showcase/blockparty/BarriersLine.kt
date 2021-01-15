@@ -51,13 +51,18 @@ class BarriersLine(private val screenWidth: Int, private val screenHeight: Int, 
         }
     }
 
-    fun intersect(hitBox: Rect): Boolean {
+    fun intersect(hitBox: Rect): Array<Boolean> {
+        val values = arrayOf(false, false)
         barriers.forEach { barrier: Barrier ->
             barrier.walls.forEach { wall: Wall ->
-                if (hitBox.intersect(wall.hitBox)) return true
+                if (hitBox.intersect(wall.hitBox)) {
+                    values[0] = true
+                    if (wall.hitBox.bottom > hitBox.top) values[1] = true
+                }
+
             }
         }
-        return false
+        return values
     }
 
     fun reset() {

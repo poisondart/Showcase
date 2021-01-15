@@ -6,11 +6,11 @@ import kotlin.math.abs
 class Player(private val screenWidth: Int, private val screenHeight: Int) {
     val size = screenWidth / 8
     private var x = screenWidth / 2 - size / 2
-    private var y = screenHeight / 2 - size / 2
+    var y = screenHeight / 2 - size / 2
     val body = Rect(x, y, size, size)
     val hitBoxLeft = Rect(x, y, 1, size)
     val hitBoxRight = Rect(x + size - 1, y, 1, size)
-    val hitBoxTop = Rect(x + 1, y, size - 1, 1)
+    val hitBoxTop = Rect(x + 5, y, size - 10, 1)
 
     fun move(xAcceleration: Float, yAcceleration: Float, isPushedLeft: Boolean, isPushedRight: Boolean, isPushedTop: Boolean) {
 
@@ -36,6 +36,17 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
             }
         }*/
         //}
+    }
+
+    fun move(xAcceleration: Float, isIntersect: Boolean, isPushed: Boolean) {
+        if (xAcceleration < 0) {
+            if (!isIntersect) x += (abs(xAcceleration) * 10).toInt()
+            if (x > screenWidth - body.width()) x = screenWidth - body.width()
+        } else {
+            if (!isIntersect) x -= (abs(xAcceleration) * 10).toInt()
+            if (x < 0) x = 0
+        }
+        if (isPushed) pushDownByWall()
     }
 
     private fun pushDownByWall() {
@@ -66,9 +77,9 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
         hitBoxRight.right = hitBoxRight.left + 1
         hitBoxRight.bottom = hitBoxRight.top + size
 
-        hitBoxTop.left = x + 1
+        hitBoxTop.left = x + 5
         hitBoxTop.top = y
-        hitBoxTop.right = hitBoxTop.left + size - 1
+        hitBoxTop.right = hitBoxTop.left + size - 10
         hitBoxTop.bottom = hitBoxTop.top + 1
     }
 }
