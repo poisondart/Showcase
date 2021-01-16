@@ -2,7 +2,7 @@ package com.poisondart.showcase.arkanoid
 
 import android.graphics.Rect
 
-class Bat(private val screenWidth: Int, screenHeight: Int) {
+class Bat(private val screenWidth: Int, private val screenHeight: Int) {
     private val width = screenWidth / 8
     private val height = width / 8
 
@@ -19,6 +19,13 @@ class Bat(private val screenWidth: Int, screenHeight: Int) {
         x -= (xAcceleration * 10).toInt()
         if (x > screenWidth - width) x = screenWidth - width
         if (x < 0) x = 0
+    }
+
+
+    fun reset() {
+        x = screenWidth / 2 - width / 2
+        y = screenHeight - (height * 4)
+        update()
     }
 
     fun update() {

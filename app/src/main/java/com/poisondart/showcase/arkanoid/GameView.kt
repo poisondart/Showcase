@@ -21,6 +21,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
     private var canvas: Canvas? = null
 
     private val bat = Bat(screenWidth, screenHeight)
+    private val projectile = Projectile(screenWidth, screenHeight, screenWidth / 8)
 
     private val accelerometerHelper = AccelerometerHelper(context)
 
@@ -35,10 +36,13 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
 
-            canvas?.drawColor(Color.BLUE)
+            canvas?.drawColor(Color.BLACK)
 
             paint.color = Color.YELLOW
             canvas?.drawRect(bat.hitBox, paint)
+
+            paint.color = Color.RED
+            canvas?.drawRect(projectile.hitBox, paint)
 
             holder.unlockCanvasAndPost(canvas)
         }
@@ -48,6 +52,14 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         if (!paused) {
             bat.move(accelerometerHelper.xAcceleration)
             bat.update()
+            projectile.move(bat.hitBox, accelerometerHelper.xAcceleration)
+            projectile.update()
+
+            if (projectile.isOut()) {
+                paused = true
+                projectile.reset()
+                bat.reset()
+            }
         }
     }
 
