@@ -19,6 +19,9 @@
         <activity
             android:name=".blockparty.BlockPartyActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".arkanoid.ArkanoidActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
