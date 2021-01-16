@@ -40,6 +40,10 @@ class Projectile(private val screenWidth: Int, private val screenHeight: Int, pl
         }
     }
 
+    fun reflect() {
+        ySpeed = -ySpeed
+    }
+
     fun isOut() = y > screenHeight
 
     fun reset() {

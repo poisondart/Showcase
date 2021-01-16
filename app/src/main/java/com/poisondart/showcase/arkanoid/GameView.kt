@@ -25,6 +25,8 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
 
     private val accelerometerHelper = AccelerometerHelper(context)
 
+    private val blockWall = BlockWall(screenWidth)
+
     override fun run() {
         while (playing) {
             draw()
@@ -44,6 +46,11 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
             paint.color = Color.RED
             canvas?.drawRect(projectile.hitBox, paint)
 
+            paint.color = Color.BLUE
+            blockWall.blocks.forEach {
+                canvas?.drawRect(it.hitBox, paint)
+            }
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -52,6 +59,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         if (!paused) {
             bat.move(accelerometerHelper.xAcceleration)
             bat.update()
+            if (blockWall.intersect(projectile.hitBox)) projectile.reflect()
             projectile.move(bat.hitBox, accelerometerHelper.xAcceleration)
             projectile.update()
 
@@ -59,6 +67,7 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
                 paused = true
                 projectile.reset()
                 bat.reset()
+                blockWall.reset()
             }
         }
     }
