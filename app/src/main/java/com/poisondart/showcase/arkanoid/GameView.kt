@@ -59,17 +59,27 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         if (!paused) {
             bat.move(accelerometerHelper.xAcceleration)
             bat.update()
-            if (blockWall.intersect(projectile.hitBox)) projectile.reflect()
+            if (blockWall.intersect(projectile.hitBox)) {
+                if (blockWall.blocks.isEmpty()) {
+                    resetGame()
+                    return
+                }
+                projectile.reflect()
+            }
             projectile.move(bat.hitBox, accelerometerHelper.xAcceleration)
             projectile.update()
 
             if (projectile.isOut()) {
-                paused = true
-                projectile.reset()
-                bat.reset()
-                blockWall.reset()
+                resetGame()
             }
         }
+    }
+
+    private fun resetGame() {
+        paused = true
+        projectile.reset()
+        bat.reset()
+        blockWall.reset()
     }
 
     @SuppressLint("ClickableViewAccessibility")
