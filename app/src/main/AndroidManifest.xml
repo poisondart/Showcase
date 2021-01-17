@@ -17,13 +17,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.poisondart.showcase.games.blockparty.BlockPartyActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.poisondart.showcase.games.arkanoid.ArkanoidActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.poisondart.showcase.games.scroll_shooter.ScrollShooterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".games.flappy_clone.FlappyCloneActivity"
             android:screenOrientation="portrait" />
     </application>
 

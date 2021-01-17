@@ -9,8 +9,8 @@ import android.widget.ListView
 import android.widget.Toast
 
 class MenuActivity: ListActivity() {
-    private val games = arrayOf("Block Party", "Arkanoid", "Scroll Shooter")
-    private val activities = arrayOf("blockparty.BlockPartyActivity", "arkanoid.ArkanoidActivity", "scroll_shooter.ScrollShooterActivity")
+    private val games = arrayOf("Arkanoid", "Scroll Shooter", "Flappy Clone")
+    private val activities = arrayOf("arkanoid.ArkanoidActivity", "scroll_shooter.ScrollShooterActivity", "flappy_clone.FlappyCloneActivity")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
