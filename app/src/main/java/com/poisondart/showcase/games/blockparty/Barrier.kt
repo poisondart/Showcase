@@ -1,4 +1,4 @@
-package com.poisondart.showcase.blockparty
+package com.poisondart.showcase.games.blockparty
 
 class Barrier(private val screenWidth: Int, private val screenHeight: Int, private val playerSize: Int) {
 

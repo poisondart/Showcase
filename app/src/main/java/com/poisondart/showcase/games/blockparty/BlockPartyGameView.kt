@@ -1,4 +1,4 @@
-package com.poisondart.showcase.blockparty
+package com.poisondart.showcase.games.blockparty
 
 import android.annotation.SuppressLint
 import android.content.Context

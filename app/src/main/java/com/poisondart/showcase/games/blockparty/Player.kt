@@ -1,4 +1,4 @@
-package com.poisondart.showcase.blockparty
+package com.poisondart.showcase.games.blockparty
 
 import android.graphics.Rect
 import kotlin.math.abs

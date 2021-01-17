@@ -1,4 +1,4 @@
-package com.poisondart.showcase.arkanoid
+package com.poisondart.showcase.games.arkanoid
 
 import android.annotation.SuppressLint
 import android.content.Context
