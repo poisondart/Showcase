@@ -2,23 +2,13 @@ package com.poisondart.showcase.arkanoid
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.view.MotionEvent
-import android.view.SurfaceView
+import com.poisondart.showcase.core.AccelerometerHelper
+import com.poisondart.showcase.core.GameView
 
 @SuppressLint("ViewConstructor")
-class GameView(context: Context, private val screenWidth: Int, screenHeight: Int) : SurfaceView(context), Runnable  {
-
-    @Volatile
-    private var playing = false
-    private var paused = true
-
-    private var gameThread: Thread? = null
-
-    private val paint: Paint = Paint()
-    private var canvas: Canvas? = null
+class ArkanoidGameView(context: Context, screenWidth: Int, screenHeight: Int) : GameView(context, screenWidth, screenHeight) {
 
     private val bat = Bat(screenWidth, screenHeight)
     private val projectile = Projectile(screenWidth, screenHeight, screenWidth / 8)
@@ -27,35 +17,22 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
 
     private val blockWall = BlockWall(screenWidth)
 
-    override fun run() {
-        while (playing) {
-            draw()
-            update()
+    override fun drawObjects() {
+        canvas?.drawColor(Color.BLACK)
+
+        paint.color = Color.YELLOW
+        canvas?.drawRect(bat.hitBox, paint)
+
+        paint.color = Color.RED
+        canvas?.drawRect(projectile.hitBox, paint)
+
+        paint.color = Color.BLUE
+        blockWall.blocks.forEach {
+            canvas?.drawRect(it.hitBox, paint)
         }
     }
 
-    private fun draw() {
-        if (holder.surface.isValid) {
-            canvas = holder.lockCanvas()
-
-            canvas?.drawColor(Color.BLACK)
-
-            paint.color = Color.YELLOW
-            canvas?.drawRect(bat.hitBox, paint)
-
-            paint.color = Color.RED
-            canvas?.drawRect(projectile.hitBox, paint)
-
-            paint.color = Color.BLUE
-            blockWall.blocks.forEach {
-                canvas?.drawRect(it.hitBox, paint)
-            }
-
-            holder.unlockCanvasAndPost(canvas)
-        }
-    }
-
-    private fun update() {
+    override fun update() {
         if (!paused) {
             bat.move(accelerometerHelper.xAcceleration)
             bat.update()
@@ -90,21 +67,14 @@ class GameView(context: Context, private val screenWidth: Int, screenHeight: Int
         return true
     }
 
-    fun pause() {
-        playing = false
+    override fun pause() {
         paused = true
         accelerometerHelper.unregisterListener()
-        try {
-            gameThread?.join()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+        super.pause()
     }
 
-    fun resume() {
-        playing = true
+    override fun resume() {
         accelerometerHelper.registerListener()
-        gameThread = Thread(this)
-        gameThread?.start()
+        super.resume()
     }
 }

@@ -1,4 +1,4 @@
-package com.poisondart.showcase.blockparty
+package com.poisondart.showcase.core
 
 import android.content.Context
 import android.hardware.Sensor
@@ -15,6 +15,7 @@ class AccelerometerHelper(context: Context): SensorEventListener {
 
     var xAcceleration = 0f
     var yAcceleration = 0f
+    var zAcceleration = 0f
 
     init {
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {

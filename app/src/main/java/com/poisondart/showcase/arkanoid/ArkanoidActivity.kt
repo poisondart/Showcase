@@ -5,24 +5,24 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 class ArkanoidActivity: AppCompatActivity() {
-    private lateinit var gameView: GameView
+    private lateinit var arkanoidGameView: ArkanoidGameView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
-        gameView = GameView(this, size.x, size.y)
-        setContentView(gameView)
+        arkanoidGameView = ArkanoidGameView(this, size.x, size.y)
+        setContentView(arkanoidGameView)
     }
 
     override fun onPause() {
         super.onPause()
-        gameView.pause()
+        arkanoidGameView.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        gameView.resume()
+        arkanoidGameView.resume()
     }
 }

@@ -6,24 +6,24 @@ import android.os.Bundle
 
 class BlockPartyActivity : AppCompatActivity() {
 
-    private lateinit var gameView: GameView
+    private lateinit var blockPartyGameView: BlockPartyGameView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
-        gameView = GameView(this, size.x, size.y)
-        setContentView(gameView)
+        blockPartyGameView = BlockPartyGameView(this, size.x, size.y)
+        setContentView(blockPartyGameView)
     }
 
     override fun onPause() {
         super.onPause()
-        gameView.pause()
+        blockPartyGameView.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        gameView.resume()
+        blockPartyGameView.resume()
     }
 }
