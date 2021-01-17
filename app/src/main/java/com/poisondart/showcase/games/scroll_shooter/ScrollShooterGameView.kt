@@ -17,6 +17,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
         if (!paused) {
             player.move(accelerometerHelper.xAcceleration)
             player.update()
+            player.cannon.update()
         }
     }
 
@@ -25,12 +26,22 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
 
         paint.color = Color.WHITE
         canvas?.drawRect(player.hitBox, paint)
+
+        paint.color = Color.YELLOW
+        player.cannon.projectiles.forEach {
+            if (it.isShootOut) {
+                canvas?.drawRect(it.hitBox, paint)
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (paused && event.action == MotionEvent.ACTION_DOWN) {
+        if (paused && event.action == MotionEvent.ACTION_UP) {
             paused = false
+        }
+        if (!paused && event.action == MotionEvent.ACTION_DOWN) {
+            player.shot()
         }
         return true
     }

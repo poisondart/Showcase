@@ -9,6 +9,8 @@ class Player(private val screenWidth: Int, screenHeight: Int) {
 
     val hitBox = Rect(x, y, size, size)
 
+    val cannon = Cannon(size)
+
     init {
         update()
     }
@@ -17,6 +19,10 @@ class Player(private val screenWidth: Int, screenHeight: Int) {
         x -= (xAcceleration * 10).toInt()
         if (x > screenWidth - size) x = screenWidth - size
         if (x < 0) x = 0
+    }
+
+    fun shot() {
+        cannon.shot(x + (size / 2), y)
     }
 
     fun update() {
