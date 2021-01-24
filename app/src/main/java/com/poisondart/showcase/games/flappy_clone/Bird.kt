@@ -4,7 +4,7 @@ import android.graphics.Rect
 import kotlin.math.abs
 
 class Bird(private val screenWidth: Int, private val screenHeight: Int) {
-    private val size = screenWidth / 8
+    val size = screenWidth / 8
     private var x = screenWidth / 2 - size
     private var y = screenHeight / 2 - size / 2
 

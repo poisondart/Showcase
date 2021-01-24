@@ -10,11 +10,14 @@ import com.poisondart.showcase.core.GameView
 class FlappyCloneGameView(context: Context, screenWidth: Int, screenHeight: Int): GameView(context, screenWidth, screenHeight) {
 
     private val bird = Bird(screenWidth, screenHeight)
+    private val column = Column(screenWidth, screenHeight, bird.size)
 
     override fun update() {
         if (!paused) {
             bird.move()
             bird.update()
+            column.move()
+            column.update()
             if (bird.isOut()) {
                 reset()
             }
@@ -31,6 +34,11 @@ class FlappyCloneGameView(context: Context, screenWidth: Int, screenHeight: Int)
 
         paint.color = Color.YELLOW
         canvas?.drawRect(bird.hitBox, paint)
+
+        paint.color = Color.GREEN
+        column.parts.forEach {
+            canvas?.drawRect(it.hitBox, paint)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
