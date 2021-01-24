@@ -3,8 +3,6 @@ package com.poisondart.showcase.games.flappy_clone
 import android.graphics.Rect
 
 class ColumnPart(
-        private val screenWidth: Int,
-        private val screenHeight: Int,
         private val width: Int,
         private val height: Int,
         var x: Int,

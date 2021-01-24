@@ -16,8 +16,7 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
     }
 
     private fun build() {
-        val type = generator.nextInt(3)
-        when (type) {
+        when (generator.nextInt(3)) {
             0 -> buildCenterHole()
             1 -> buildTopHole()
             2 -> buildBottomHole()
@@ -26,8 +25,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
 
     private fun buildCenterHole() {
         val columnPartTop = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 (screenHeight * 0.5 - birdSize * 1.5).toInt(),
                 screenWidth,
@@ -36,8 +33,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
         parts.add(columnPartTop)
 
         val columnPartBottom = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 (screenHeight * 0.5 - birdSize * 1.5).toInt(),
                 screenWidth,
@@ -48,8 +43,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
 
     private fun buildTopHole() {
         val columnPartTop = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 (screenHeight * 0.33 - birdSize * 1.5).toInt(),
                 screenWidth,
@@ -58,8 +51,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
         parts.add(columnPartTop)
 
         val columnPartBottom = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 screenHeight,
                 screenWidth,
@@ -70,8 +61,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
 
     private fun buildBottomHole() {
         val columnPartTop = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 (screenHeight * 0.66 - birdSize * 1.5).toInt(),
                 screenWidth,
@@ -80,8 +69,6 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
         parts.add(columnPartTop)
 
         val columnPartBottom = ColumnPart(
-                screenWidth,
-                screenHeight,
                 birdSize,
                 screenHeight,
                 screenWidth,
