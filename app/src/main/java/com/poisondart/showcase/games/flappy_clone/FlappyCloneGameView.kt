@@ -18,6 +18,9 @@ class FlappyCloneGameView(context: Context, screenWidth: Int, screenHeight: Int)
             bird.update()
             column.move()
             column.update()
+
+            if (column.intersect(bird.hitBox)) {reset()}
+
             if (bird.isOut()) {
                 reset()
             }
@@ -27,6 +30,7 @@ class FlappyCloneGameView(context: Context, screenWidth: Int, screenHeight: Int)
     private fun reset() {
         paused = true
         bird.reset()
+        column.reset()
     }
 
     override fun drawObjects() {
