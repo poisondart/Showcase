@@ -7,7 +7,7 @@ class ColumnPart(
         private val screenHeight: Int,
         private val width: Int,
         private val height: Int,
-        private var x: Int,
+        var x: Int,
         private val y: Int
 ) {
 
@@ -17,9 +17,8 @@ class ColumnPart(
         update()
     }
 
-    fun move() {
-        x -= width / 8
-        if (x < 0 - width) x = screenWidth
+    fun move(x: Int) {
+        this.x = x
     }
 
     fun update() {

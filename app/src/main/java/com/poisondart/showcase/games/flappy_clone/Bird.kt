@@ -5,7 +5,7 @@ import kotlin.math.abs
 
 class Bird(private val screenWidth: Int, private val screenHeight: Int) {
     val size = screenWidth / 8
-    private var x = screenWidth / 2 - size
+    private var x = size
     private var y = screenHeight / 2 - size / 2
 
     private var speed = 10
@@ -31,7 +31,7 @@ class Bird(private val screenWidth: Int, private val screenHeight: Int) {
     fun isOut() = y > screenHeight
 
     fun reset() {
-        x = screenWidth / 2 - size
+        x = size
         y = screenHeight / 2 - size / 2
         update()
     }
