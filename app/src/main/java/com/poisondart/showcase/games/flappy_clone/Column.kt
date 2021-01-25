@@ -7,6 +7,8 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
 
     private var x = screenWidth
 
+    var passedColumnCount = 0
+
     var parts = mutableListOf<ColumnPart>()
 
     private val generator = Random()
@@ -80,6 +82,7 @@ class Column(private val screenWidth: Int, private val screenHeight: Int, privat
     fun move() {
         x -= birdSize / 10
         if (x < 0 - birdSize) {
+            passedColumnCount++
             reset()
             return
         }
