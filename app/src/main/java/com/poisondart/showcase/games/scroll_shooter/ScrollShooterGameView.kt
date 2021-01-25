@@ -15,7 +15,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
 
     override fun update() {
         if (!paused) {
-            player.move(accelerometerHelper.xAcceleration)
+            player.move(accelerometerHelper.xAcceleration, accelerometerHelper.yAcceleration.toInt())
             player.update()
             player.cannon.update()
         }
