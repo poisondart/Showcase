@@ -8,16 +8,22 @@ import com.poisondart.showcase.core.AccelerometerHelper
 import com.poisondart.showcase.core.GameView
 
 @SuppressLint("ViewConstructor")
-class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: Int): GameView(context, screenWidth, screenHeight) {
+class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: Int) :
+    GameView(context, screenWidth, screenHeight) {
 
     private val player = Player(screenWidth, screenHeight)
+    private val background = Background(screenWidth, screenHeight, player.hitBox.width())
     private val accelerometerHelper = AccelerometerHelper(context)
 
     override fun update() {
         if (!paused) {
-            player.move(accelerometerHelper.xAcceleration, accelerometerHelper.yAcceleration.toInt())
+            player.move(
+                accelerometerHelper.xAcceleration,
+                accelerometerHelper.yAcceleration.toInt()
+            )
             player.update()
             player.cannon.update()
+            background.update()
         }
     }
 
@@ -32,6 +38,16 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
             if (it.isShootOut) {
                 canvas?.drawRect(it.hitBox, paint)
             }
+        }
+        paint.color = Color.WHITE
+        background.stars.forEach {
+            canvas?.drawRect(
+                it.x.toFloat(),
+                it.y.toFloat(),
+                (it.x + 4).toFloat(),
+                (it.y + 4).toFloat(),
+                paint
+            )
         }
     }
 
