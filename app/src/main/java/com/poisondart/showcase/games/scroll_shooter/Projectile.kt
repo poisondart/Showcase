@@ -9,7 +9,7 @@ class Projectile(
     private var x = -size
     private var y = -size
 
-    private val speed = 10
+    private val speed = size * 3
 
     var isShootOut = false
 
