@@ -4,7 +4,7 @@ import android.graphics.Rect
 import kotlin.math.abs
 
 class Player(private val screenWidth: Int, private val screenHeight: Int) {
-    private val size = screenWidth / 8
+    val size = screenWidth / 8
     private var x = screenWidth / 2 - size / 2
     private var y = screenHeight - (size * 4)
 

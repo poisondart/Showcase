@@ -3,18 +3,26 @@ package com.poisondart.showcase.games.scroll_shooter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.view.MotionEvent
 import com.poisondart.showcase.core.AccelerometerHelper
 import com.poisondart.showcase.core.GameView
+import com.poisondart.showcase.core.HighScoreManager
 
 @SuppressLint("ViewConstructor")
 class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: Int) :
     GameView(context, screenWidth, screenHeight) {
 
+    companion object {
+        private const val MAX_SCORE = "scroll_shooter_max_score"
+    }
+
     private val player = Player(screenWidth, screenHeight)
-    private val chainEnemy = ChainEnemy(player.hitBox.width(), screenWidth, screenHeight)
-    private val background = Background(screenWidth, screenHeight, player.hitBox.width())
+    private val chainEnemy = ChainEnemy(player.size, screenWidth, screenHeight)
+    private val background = Background(screenWidth, screenHeight, player.size)
     private val accelerometerHelper = AccelerometerHelper(context)
+    private val highScoreManager = HighScoreManager(context)
+    private var reward = 0
 
     override fun update() {
         if (!paused) {
@@ -28,6 +36,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
             background.update()
 
             if (chainEnemy.intersectProjectile(player.cannon.projectiles)) {
+                reward += 50
                 if (chainEnemy.enemies.isEmpty()) chainEnemy.respawn()
             }
 
@@ -41,9 +50,11 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     }
 
     private fun restart() {
+        highScoreManager.updateHighScore(MAX_SCORE, reward)
         chainEnemy.respawn()
         player.respawn()
         paused = true
+        reward = 0
     }
 
     override fun drawObjects() {
@@ -72,6 +83,16 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
         chainEnemy.enemies.forEach {
             canvas?.drawRect(it.hitBox, paint)
         }
+
+        val textScore = "Score: $reward Max Score: ${highScoreManager.getHighScore(MAX_SCORE)}"
+        val textPaint = Paint()
+        textPaint.textAlign = Paint.Align.LEFT
+        textPaint.color = Color.GREEN
+        textPaint.textSize = 25.0f
+
+        val xPos = player.size / 2
+        val yPos = canvas!!.height - player.size
+        canvas?.drawText(textScore, xPos.toFloat(), yPos.toFloat(), textPaint)
     }
 
     @SuppressLint("ClickableViewAccessibility")
