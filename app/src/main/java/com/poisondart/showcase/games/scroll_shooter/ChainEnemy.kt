@@ -3,7 +3,7 @@ package com.poisondart.showcase.games.scroll_shooter
 import android.graphics.Rect
 import kotlin.math.abs
 
-class ChainEnemy(playerSize: Int, private val screenWidth: Int, private val screenHeight: Int) {
+class ChainEnemy(private val playerSize: Int, private val screenWidth: Int, private val screenHeight: Int) {
 
     val enemies = mutableListOf<Enemy>()
     private var verticalSpeed = 10
@@ -11,11 +11,7 @@ class ChainEnemy(playerSize: Int, private val screenWidth: Int, private val scre
     private var x = 0
 
     init {
-        for (i in 0..10) {
-            enemies.add(Enemy(playerSize, verticalSpeed, x, 500))
-            verticalSpeed *= (-1)
-            x += playerSize / 2
-        }
+        respawn()
     }
 
     fun update() {
@@ -23,6 +19,7 @@ class ChainEnemy(playerSize: Int, private val screenWidth: Int, private val scre
     }
 
     fun move() {
+        if (enemies.isEmpty()) return
         enemies.forEach {
             it.move(horizontalSpeed)
         }
@@ -30,6 +27,38 @@ class ChainEnemy(playerSize: Int, private val screenWidth: Int, private val scre
         if ((horizontalSpeed > 0 && enemies.first().x > screenWidth) || (horizontalSpeed < 0 && enemies.last().x < -enemies.last().size)) {
             horizontalSpeed *= (-1)
         }
+    }
+
+    fun respawn() {
+        enemies.clear()
+        for (i in 0..10) {
+            enemies.add(Enemy(playerSize, verticalSpeed, x, 500))
+            verticalSpeed *= (-1)
+            x += playerSize / 2
+        }
+
+        horizontalSpeed = 10
+        x = 0
+    }
+
+    fun intersectProjectile(projectiles: Array<Projectile>): Boolean {
+        enemies.forEach {
+            projectiles.forEach { projectile ->
+                if (projectile.isShootOut && projectile.hitBox.intersect(it.hitBox)) {
+                    projectile.isShootOut = false
+                    enemies.remove(it)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun intersectPlayer(playerHitBox: Rect): Boolean {
+        enemies.forEach {
+            if (it.hitBox.intersect(playerHitBox)) return true
+        }
+        return false
     }
 
     inner class Enemy(playerSize: Int, private var verticalSpeed: Int, var x: Int, var y: Int) {

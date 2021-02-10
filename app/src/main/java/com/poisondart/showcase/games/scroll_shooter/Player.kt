@@ -37,6 +37,12 @@ class Player(private val screenWidth: Int, private val screenHeight: Int) {
         cannon.shot(x + (size / 2), y)
     }
 
+    fun respawn() {
+        x = screenWidth / 2 - size / 2
+        y = screenHeight - (size * 4)
+        update()
+    }
+
     fun update() {
         hitBox.left = x
         hitBox.top = y

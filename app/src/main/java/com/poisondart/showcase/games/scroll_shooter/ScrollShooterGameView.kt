@@ -27,9 +27,23 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
 
             background.update()
 
+            if (chainEnemy.intersectProjectile(player.cannon.projectiles)) {
+                if (chainEnemy.enemies.isEmpty()) chainEnemy.respawn()
+            }
+
+            if (chainEnemy.intersectPlayer(player.hitBox)) {
+                restart()
+            }
+
             chainEnemy.move()
             chainEnemy.update()
         }
+    }
+
+    private fun restart() {
+        chainEnemy.respawn()
+        player.respawn()
+        paused = true
     }
 
     override fun drawObjects() {
