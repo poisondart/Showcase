@@ -3,9 +3,9 @@ package com.poisondart.showcase.games.scroll_shooter
 import java.util.*
 
 class Background(
-    screenWidth: Int,
-    screenHeight: Int,
-    playerSize: Int
+    private val screenWidth: Int,
+    private val screenHeight: Int,
+    private val playerSize: Int
 ) {
 
     val stars = mutableListOf<Star>()
@@ -16,15 +16,11 @@ class Background(
 
     init {
         for (i in 0..40) {
-            stars.add(Star(screenWidth, screenHeight, playerSize))
+            stars.add(Star())
         }
     }
 
-    class Star(
-        private val screenWidth: Int,
-        private val screenHeight: Int,
-        private val playerSize: Int
-    ) {
+    inner class Star {
         var x: Int = 0
         var y: Int = 0
 

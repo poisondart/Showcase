@@ -12,6 +12,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     GameView(context, screenWidth, screenHeight) {
 
     private val player = Player(screenWidth, screenHeight)
+    private val chainEnemy = ChainEnemy(player.hitBox.width(), screenWidth, screenHeight)
     private val background = Background(screenWidth, screenHeight, player.hitBox.width())
     private val accelerometerHelper = AccelerometerHelper(context)
 
@@ -23,7 +24,11 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
             )
             player.update()
             player.cannon.update()
+
             background.update()
+
+            chainEnemy.move()
+            chainEnemy.update()
         }
     }
 
@@ -48,6 +53,10 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
                 (it.y + 4).toFloat(),
                 paint
             )
+        }
+        paint.color = Color.RED
+        chainEnemy.enemies.forEach {
+            canvas?.drawRect(it.hitBox, paint)
         }
     }
 
