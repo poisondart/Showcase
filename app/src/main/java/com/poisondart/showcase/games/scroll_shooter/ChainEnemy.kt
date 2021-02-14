@@ -33,6 +33,7 @@ class ChainEnemy(private val playerSize: Int, private val screenWidth: Int, priv
 
     fun respawn() {
         y = Random.nextInt(screenHeight - playerSize)
+        x = -(playerSize / 2) * 10
         enemies.clear()
         for (i in 0..10) {
             enemies.add(Enemy(playerSize, verticalSpeed, x, y))
