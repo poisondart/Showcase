@@ -11,6 +11,8 @@ class SingleEnemy(playerSize: Int, private val screenWidth: Int, private val scr
 
     private var lives = 9
 
+    private var gravity = 0
+
     val hitBox = Rect(x, y, (x + size).toInt(), (y + size).toInt())
 
     init {
@@ -18,16 +20,28 @@ class SingleEnemy(playerSize: Int, private val screenWidth: Int, private val scr
     }
 
     fun respawn() {
+        gravity = Random.nextInt(2)
         lives = 9
         x = Random.nextInt((screenWidth - size).toInt())
-        y = (-size).toInt()
+        y = if (gravity == 0) {
+            (-size).toInt()
+        } else {
+            (screenHeight + size).toInt()
+        }
         update()
     }
 
     fun move() {
-        y += (size / 10).toInt()
-        if (y > screenHeight) {
-            respawn()
+        if (gravity == 0) {
+            y += (size / 10).toInt()
+            if (y > screenHeight) {
+                respawn()
+            }
+        } else {
+            y -= (size / 10).toInt()
+            if (y < - size) {
+                respawn()
+            }
         }
     }
 
