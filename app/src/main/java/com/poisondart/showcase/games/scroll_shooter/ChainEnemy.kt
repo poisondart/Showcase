@@ -2,6 +2,7 @@ package com.poisondart.showcase.games.scroll_shooter
 
 import android.graphics.Rect
 import kotlin.math.abs
+import kotlin.random.Random
 
 class ChainEnemy(private val playerSize: Int, private val screenWidth: Int, private val screenHeight: Int) {
 
@@ -9,6 +10,7 @@ class ChainEnemy(private val playerSize: Int, private val screenWidth: Int, priv
     private var verticalSpeed = 10
     var horizontalSpeed = 10
     private var x = 0
+    private var y = 0
 
     init {
         respawn()
@@ -30,9 +32,10 @@ class ChainEnemy(private val playerSize: Int, private val screenWidth: Int, priv
     }
 
     fun respawn() {
+        y = Random.nextInt(screenHeight - playerSize)
         enemies.clear()
         for (i in 0..10) {
-            enemies.add(Enemy(playerSize, verticalSpeed, x, 500))
+            enemies.add(Enemy(playerSize, verticalSpeed, x, y))
             verticalSpeed *= (-1)
             x += playerSize / 2
         }
