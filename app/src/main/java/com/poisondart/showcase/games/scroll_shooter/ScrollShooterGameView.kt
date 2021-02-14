@@ -19,6 +19,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
 
     private val player = Player(screenWidth, screenHeight)
     private val chainEnemy = ChainEnemy(player.size, screenWidth, screenHeight)
+    private val singleEnemy = SingleEnemy(player.size, screenWidth, screenHeight)
     private val background = Background(screenWidth, screenHeight, player.size)
     private val accelerometerHelper = AccelerometerHelper(context)
     private val highScoreManager = HighScoreManager(context)
@@ -44,14 +45,29 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
                 restart()
             }
 
+            if (singleEnemy.intersectPlayer(player.hitBox)) {
+                restart()
+            }
+
+            if (singleEnemy.intersectProjectiles(player.cannon.projectiles)) {
+                if (singleEnemy.isDead()) {
+                    reward += 100
+                    singleEnemy.respawn()
+                }
+            }
+
             chainEnemy.move()
             chainEnemy.update()
+
+            singleEnemy.move()
+            singleEnemy.update()
         }
     }
 
     private fun restart() {
         highScoreManager.updateHighScore(MAX_SCORE, reward)
         chainEnemy.respawn()
+        singleEnemy.respawn()
         player.respawn()
         paused = true
         reward = 0
@@ -83,6 +99,9 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
         chainEnemy.enemies.forEach {
             canvas?.drawRect(it.hitBox, paint)
         }
+
+        paint.color = Color.BLUE
+        canvas?.drawRect(singleEnemy.hitBox, paint)
 
         val textScore = "Score: $reward Max Score: ${highScoreManager.getHighScore(MAX_SCORE)}"
         val textPaint = Paint()
