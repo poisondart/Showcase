@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import com.poisondart.showcase.core.AccelerometerHelper
 import com.poisondart.showcase.core.GameView
 import com.poisondart.showcase.core.HighScoreManager
+import com.poisondart.showcase.core.SpriteSet
 
 @SuppressLint("ViewConstructor")
 class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: Int) :
@@ -24,6 +25,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     private val background = Background(screenWidth, screenHeight, player.size)
     private val accelerometerHelper = AccelerometerHelper(context)
     private val highScoreManager = HighScoreManager(context)
+    private val spriteSet = SpriteSet(context, "spriteset.png")
     private var reward = 0
 
     override fun update() {
@@ -90,8 +92,8 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     override fun drawObjects() {
         canvas?.drawColor(Color.BLACK)
 
-        paint.color = Color.WHITE
-        canvas?.drawRect(player.hitBox, paint)
+
+        canvas?.drawBitmap(spriteSet.test(0,0,16,16, player.hitBox), player.x.toFloat(), player.y.toFloat(), paint)
 
         paint.color = Color.YELLOW
         player.cannon.projectiles.forEach {

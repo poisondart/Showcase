@@ -5,8 +5,8 @@ import kotlin.math.abs
 
 class Player(private val screenWidth: Int, private val screenHeight: Int) {
     val size = screenWidth / 8
-    private var x = screenWidth / 2 - size / 2
-    private var y = screenHeight - (size * 4)
+    var x = screenWidth / 2 - size / 2
+    var y = screenHeight - (size * 4)
 
     val hitBox = Rect(x, y, size, size)
 
