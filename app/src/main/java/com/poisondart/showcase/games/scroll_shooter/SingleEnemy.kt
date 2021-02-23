@@ -6,8 +6,8 @@ import kotlin.random.Random
 class SingleEnemy(playerSize: Int, private val screenWidth: Int, private val screenHeight: Int) {
     private val size = playerSize * 1.5
 
-    private var x: Int = 0
-    private var y: Int = 0
+    var x: Int = 0
+    var y: Int = 0
 
     private var lives = 9
 

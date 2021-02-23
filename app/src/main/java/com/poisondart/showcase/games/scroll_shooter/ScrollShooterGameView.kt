@@ -28,6 +28,13 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     private val spriteSet = SpriteSet(context, "spriteset.png")
     private var reward = 0
 
+    init {
+        spriteSet.createSprite("player", 0,0,16,16, player.hitBox)
+        spriteSet.createSprite("chainEnemy", 16,0,16,16, chainEnemy.enemies.first().hitBox)
+        spriteSet.createSprite("singleEnemy", 32,0,16,16, singleEnemy.hitBox)
+        spriteSet.createSprite("archEnemy", 48,0,16,16, archEnemy.enemies.first().hitBox)
+    }
+
     override fun update() {
         if (!paused) {
             player.move(
@@ -92,8 +99,7 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
     override fun drawObjects() {
         canvas?.drawColor(Color.BLACK)
 
-
-        canvas?.drawBitmap(spriteSet.test(0,0,16,16, player.hitBox), player.x.toFloat(), player.y.toFloat(), paint)
+        canvas?.drawBitmap(spriteSet.getSprite("player"), player.x.toFloat(), player.y.toFloat(), paint)
 
         paint.color = Color.YELLOW
         player.cannon.projectiles.forEach {
@@ -111,17 +117,16 @@ class ScrollShooterGameView(context: Context, screenWidth: Int, screenHeight: In
                 paint
             )
         }
-        paint.color = Color.RED
+
         chainEnemy.enemies.forEach {
-            canvas?.drawRect(it.hitBox, paint)
+            canvas?.drawBitmap(spriteSet.getSprite("chainEnemy"), it.x.toFloat(), it.y.toFloat(), paint)
         }
 
-        paint.color = Color.BLUE
-        canvas?.drawRect(singleEnemy.hitBox, paint)
+        canvas?.drawBitmap(spriteSet.getSprite("singleEnemy"), singleEnemy.x.toFloat(), singleEnemy.y.toFloat(), paint)
 
-        paint.color = Color.CYAN
+
         archEnemy.enemies.forEach {
-            canvas?.drawRect(it.hitBox, paint)
+            canvas?.drawBitmap(spriteSet.getSprite("archEnemy"), it.x.toFloat(), it.y.toFloat(), paint)
         }
 
         val textScore = "Score: $reward Max Score: ${highScoreManager.getHighScore(MAX_SCORE)}"
